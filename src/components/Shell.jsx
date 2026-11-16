@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useApp } from '../lib/state.jsx';
 import { can, bankAdmin, canSeeRecords, CLEARANCE, IS_LABEL, displayName } from '../lib/model.js';
 import { APP_VERSION } from '../config.js';
+import { SPIELE_MIN_LEVEL } from '../lib/spiele.js';
 import { Btn, Denied } from './ui.jsx';
 import Lagezentrum from '../pages/Lagezentrum.jsx';
 import Protokoll from '../pages/Protokoll.jsx';
@@ -20,6 +21,7 @@ import Berechtigungen from '../pages/Berechtigungen.jsx';
 import Auswertungen from '../pages/Auswertungen.jsx';
 import Kommunikation from '../pages/Kommunikation.jsx';
 import System from '../pages/System.jsx';
+import Spiele from '../pages/Spiele.jsx';
 import Konto from '../pages/Konto.jsx';
 
 const L6 = (me) => me.isAdmin || me.is >= CLEARANCE.credentials;
@@ -36,6 +38,7 @@ export const PAGES = [
   { group: 'Verwaltung', id: 'termine', label: 'Termine', C: Termine, ok: (me) => me.is >= CLEARANCE.admintermine, need: 'Level 2' },
   { group: 'Verwaltung', id: 'justiz', label: 'Justiz & Polizei', C: Justiz, ok: canSeeRecords, need: 'Justiz, Polizei oder Level 5' },
   { group: 'Verwaltung', id: 'kommunikation', label: 'Kommunikation', C: Kommunikation, ok: () => true },
+  { group: 'Verwaltung', id: 'spiele', label: 'Spiele', C: Spiele, ok: (me) => me.isAdmin || me.baseLevel >= SPIELE_MIN_LEVEL, need: 'Level 4' },
   { group: 'Steuerung', id: 'zuordnungen', label: 'Zuordnungen', C: Zuordnungen, ok: (me) => can(me, 'units.manage'), need: 'Level 6' },
   { group: 'Steuerung', id: 'berechtigungen', label: 'Berechtigungen', C: Berechtigungen, ok: (me) => can(me, 'perms.manage'), need: 'Level 6' },
   { group: 'Steuerung', id: 'auswertungen', label: 'Wahl & Umfrage', C: Auswertungen, ok: (me) => L6(me) || can(me, 'audit.view'), need: 'Level 6' },
