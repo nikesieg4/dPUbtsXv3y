@@ -35,24 +35,6 @@ Antragsarten, Termine, Justiz & Polizei (Führungszeugnisse mit Schwärzung, Haf
 
 **Steuerung** – Zuordnungen, Berechtigungen, Wahl-/Umfrage-Auswertung, System & Wartung (Wartungsmodus mit Einmalcode, Neuladen aller Instanzen, Sicherung, Patch Notes).
 
-## Spieleportal (öffentlich, ohne Anmeldung)
-
-Unter `https://<name>.github.io/<repo>/spiele/` liegt das **Spieleportal**: eine Übersicht mit Kacheln, Suche und Kategorien.
-Ein Klick öffnet die Spielseite, die die hinterlegte Adresse **in einem Rahmen (iframe) direkt auf der Seite lädt** –
-mit Vollbild, „Neu starten“, Beschreibung und weiteren Spielen. Besucher brauchen kein Konto; „Zuletzt gespielt“ merkt sich nur der eigene Browser.
-
-**Spiele verwalten:** in der Konsole unter **Verwaltung → Spiele** (Administrator und Level 4+): Titel, Adresse (URL), Beschreibung,
-optionales Vorschaubild, Kategorie, Format (16:9, 4:3, Hochformat), Reihenfolge, sichtbar/ausgeblendet. „Testen“ öffnet das Spiel im Portal.
-
-**Einmalig einrichten:** `sql/spiele.sql` im Supabase-SQL-Editor ausführen. Die Tabelle `spiele` ist per RLS so geschützt, dass
-jeder freigeschaltete Spiele lesen, aber nur Administrator und Level 4+ etwas ändern kann.
-
-Hinweise:
-- Adressen müssen mit `https://` beginnen.
-- Manche Anbieter verbieten das Einbetten ihrer Seite (`X-Frame-Options` / `frame-ancestors`). Dann bleibt der Rahmen leer –
-  solche Spiele lassen sich nur über „In neuem Tab“ öffnen. Nach dem Anlegen kurz mit „Testen“ prüfen.
-- Der Rahmen ist abgeschottet (`sandbox`): Ein Spiel kann die Portalseite nicht auf eine andere Adresse umleiten.
-
 ## Einrichtung
 
 ### 1. GitHub Pages
@@ -75,7 +57,6 @@ Steht in `src/config.js` (dieselbe URL und derselbe öffentliche anon-Key wie im
 
 ## Sicherheit
 - Content-Security-Policy im Build: Skripte nur von der eigenen Seite, Verbindungen nur zu Supabase.
-  Nur das Spieleportal darf zusätzlich fremde https-Seiten in Rahmen laden und fremde Vorschaubilder zeigen – die Konsole nicht.
 - Automatische Abmeldung nach 20 Minuten ohne Eingabe; wachsende Wartezeit nach Fehlversuchen bei der Anmeldung.
 - Eigene Sitzung (getrennt vom Portal), `noindex`, kein Referrer.
 - Änderungen an Portaldaten werden immer auf dem **aktuellen** Datenbankstand ausgeführt (lesen → ändern → schreiben), damit gleichzeitige Änderungen aus dem Portal nicht überschrieben werden.
