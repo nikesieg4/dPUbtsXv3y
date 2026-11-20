@@ -198,8 +198,9 @@ button { font: inherit; }
 .spin { width: 48px; height: 48px; border-radius: 50%; border: 6px solid rgba(255,255,255,.2); border-top-color: var(--corn); animation: spin .8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .stage:fullscreen { width: 100vw; height: 100vh; aspect-ratio: auto; }
-.stage.maxi { position: fixed; inset: 0; z-index: 60; width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; min-width: 0; }
-.stage-exit { position: absolute; top: max(10px, env(safe-area-inset-top)); right: 10px; z-index: 2; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px;
+.stage.maxi { position: fixed; inset: 0; z-index: 60; width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; min-width: 0; touch-action: none; }
+.stage.maxi iframe { top: env(safe-area-inset-top); right: env(safe-area-inset-right); bottom: env(safe-area-inset-bottom); left: env(safe-area-inset-left); width: auto; height: auto; }
+.stage-exit { position: absolute; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); z-index: 2; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px;
   background: rgba(0,0,0,.6); color: #fff; font-weight: 900; font-size: 13px; cursor: pointer; opacity: .6; }
 .stage-exit:focus-visible { opacity: 1; }
 .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 16px; background: var(--card); }
@@ -311,7 +312,8 @@ input, textarea, select, .input, .textarea, .select { font-size: 16px; }   /* un
 .btn.ghost:active:not(:disabled) { background: #DDF0FF; }
 .foot a { display: inline-block; padding: 3px 0; }
 .stage { touch-action: none; overscroll-behavior: contain; }
-body.no-scroll { overflow: hidden; }
+html.no-scroll, html.no-scroll body { overflow: hidden; overscroll-behavior: none; }
+html.no-scroll body { position: fixed; left: 0; right: 0; width: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -324,9 +326,9 @@ body.no-scroll { overflow: hidden; }
 <noscript><p style="padding:24px;font-family:sans-serif">Maiskolbistan Spiele benötigt JavaScript.</p></noscript>
 <script>
 'use strict';
+const IS_IOS = /iP(hone|ad|od)/.test(navigator.platform || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /iPhone|iPad|iPod/.test(navigator.userAgent);
 (function noIosZoom() {
-  const ios = /iP(hone|ad|od)/.test(navigator.platform || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /iPhone|iPad|iPod/.test(navigator.userAgent);
-  if (!ios) return;
+  if (!IS_IOS) return;
   const vp = document.querySelector('meta[name=viewport]');
   if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover');
   ['gesturestart', 'gesturechange'].forEach((t) => document.addEventListener(t, (e) => e.preventDefault(), { passive: false }));
@@ -666,15 +668,34 @@ function GamePage(g) {
   cleanup.push(() => document.removeEventListener('keydown', onKey));
   stage.addEventListener('pointerdown', () => { if (current) current.focus({ preventScroll: true }); });
   function syncExit() { const big = !!document.fullscreenElement || maxi; if (big && !exitBtn.isConnected) stage.append(exitBtn); if (!big) exitBtn.remove(); }
+  /* Seiten-Vollbild: Spielfläche füllt das Fenster, die Seite dahinter ist fest
+     eingefroren – Wischen oder Scrollen beendet den Modus nicht. */
+  let savedY = 0;
+  function setMaxi(on) {
+    if (on === maxi) return;
+    maxi = on;
+    stage.classList.toggle('maxi', on);
+    const root = document.documentElement;
+    if (on) { savedY = window.scrollY; document.body.style.top = -savedY + 'px'; root.classList.add('no-scroll'); }
+    else { root.classList.remove('no-scroll'); document.body.style.top = ''; window.scrollTo(0, savedY); }
+    syncExit();
+    if (current) current.focus({ preventScroll: true });
+  }
   async function toggleFull() {
     if (document.fullscreenElement) { try { await document.exitFullscreen(); } catch (e) { /* egal */ } return; }
-    if (maxi) { maxi = false; stage.classList.remove('maxi'); document.body.classList.remove('no-scroll'); syncExit(); return; }
-    if (stage.requestFullscreen) { try { await stage.requestFullscreen(); syncExit(); return; } catch (e) { /* Ersatz */ } }
-    maxi = true; stage.classList.add('maxi'); document.body.classList.add('no-scroll'); syncExit();
+    if (maxi) { setMaxi(false); return; }
+    /* iPhone/iPad: Das System-Vollbild endet dort schon beim Herunterwischen –
+       deshalb immer das eigene Vollbild. Sonst das echte Vollbild des Browsers. */
+    if (!IS_IOS && stage.requestFullscreen) { try { await stage.requestFullscreen({ navigationUI: 'hide' }); syncExit(); return; } catch (e) { /* Ersatz */ } }
+    setMaxi(true);
   }
+  function onEsc(e) { if (e.key === 'Escape' && maxi) setMaxi(false); }
+  /* Wischgesten auf dem Rand der Spielfläche (außerhalb des Spiels) nicht an die Seite weitergeben */
+  stage.addEventListener('touchmove', (e) => { if (maxi) e.preventDefault(); }, { passive: false });
+  stage.addEventListener('wheel', (e) => { if (maxi || document.fullscreenElement) e.preventDefault(); }, { passive: false });
   document.addEventListener('fullscreenchange', syncExit);
-  stage.addEventListener('keydown', (e) => { if (e.key === 'Escape' && maxi) toggleFull(); });
-  cleanup.push(() => { document.removeEventListener('fullscreenchange', syncExit); document.body.classList.remove('no-scroll'); });
+  document.addEventListener('keydown', onEsc);
+  cleanup.push(() => { document.removeEventListener('fullscreenchange', syncExit); document.removeEventListener('keydown', onEsc); setMaxi(false); });
   frame();
 
   const player = h('div', { class: 'player' }, stage,
