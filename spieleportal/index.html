@@ -96,7 +96,6 @@ button { font: inherit; }
 .logo-actions { display: flex; gap: 8px; }
 .round { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 34px; flex: 1; border: 0; border-radius: 999px; cursor: pointer;
   background: #EAF6FF; color: var(--ink); text-decoration: none; transition: background .15s, transform .15s; }
-.round:hover { background: var(--corn); transform: translateY(-1px); }
 .round svg { width: 20px; height: 20px; }
 @media (min-width: 700px) {
   .logobox { padding: 12px 14px; }
@@ -109,7 +108,7 @@ button { font: inherit; }
 /* ---------- Kacheln ---------- */
 .tile { position: relative; display: block; overflow: hidden; border-radius: var(--r-tile); background: #FFF6D0; box-shadow: var(--shadow); text-decoration: none; color: #fff;
   transition: transform .2s cubic-bezier(.3,1.6,.6,1), box-shadow .2s; isolation: isolate; }
-.tile:hover, .tile:focus-visible { transform: scale(1.06) rotate(-1deg); box-shadow: var(--shadow-hi), 0 0 0 4px var(--corn); z-index: 2; outline: none; }
+.tile:focus-visible { transform: scale(1.06) rotate(-1deg); box-shadow: var(--shadow-hi), 0 0 0 4px var(--corn); z-index: 2; outline: none; }
 .tile img, .tile-fill { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .tile-fill { display: flex; align-items: center; justify-content: center; font-size: calc(var(--cell) * .48); font-weight: 900; color: rgba(255,255,255,.95); text-shadow: 0 3px 0 rgba(0,0,0,.14); }
 .tile-fill::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.22) 22%, transparent 24%); background-size: 14px 18px; z-index: -1; }
@@ -118,7 +117,7 @@ button { font: inherit; }
   background: linear-gradient(transparent, rgba(16,48,74,.86)); opacity: 0; transform: translateY(6px); transition: opacity .15s, transform .15s;
   overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .s-gross .tile-title { font-size: 16px; padding: 30px 12px 10px; }
-.tile:hover .tile-title, .tile:focus-visible .tile-title { opacity: 1; transform: none; }
+.tile:focus-visible .tile-title { opacity: 1; transform: none; }
 @media (hover: none) { .tile-title { opacity: 1; transform: none; font-size: 11.5px; padding: 18px 6px 5px; } .s-gross .tile-title { font-size: 14px; } }
 .tile-new { position: absolute; top: 7px; left: 7px; padding: 2px 8px; border-radius: 999px; background: var(--wine); color: #fff; font-size: 11px; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; box-shadow: 0 2px 0 var(--wine-deep); }
 .skeleton { background: rgba(255,255,255,.55); box-shadow: none; animation: pulse 1.1s ease-in-out infinite alternate; }
@@ -127,7 +126,7 @@ button { font: inherit; }
 /* Kategorie-Kacheln */
 .cat-tile { grid-column: span 2; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-radius: var(--r-tile); text-decoration: none; color: var(--ink);
   background: var(--card); box-shadow: var(--shadow); font-weight: 900; font-size: 16px; line-height: 1.15; transition: transform .2s cubic-bezier(.3,1.6,.6,1), box-shadow .2s; min-width: 0; }
-.cat-tile:hover, .cat-tile:focus-visible { transform: scale(1.05); box-shadow: var(--shadow-hi), 0 0 0 4px var(--corn); outline: none; }
+.cat-tile:focus-visible { transform: scale(1.05); box-shadow: var(--shadow-hi), 0 0 0 4px var(--corn); outline: none; }
 .cat-dot { width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; }
 .cat-tile small { display: block; font-size: 12px; font-weight: 700; color: var(--ink-2); }
 .cat-tile span { min-width: 0; overflow-wrap: anywhere; }
@@ -160,14 +159,11 @@ button { font: inherit; }
 
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; cursor: pointer;
   background: var(--leaf); color: #fff; font-weight: 900; font-size: 15.5px; text-decoration: none; box-shadow: 0 4px 0 var(--leaf-deep); transition: transform .1s, background .15s; white-space: nowrap; }
-.btn:hover:not(:disabled) { background: var(--leaf-hi); }
 .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--leaf-deep); }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 .btn svg { width: 18px; height: 18px; }
 .btn.corn { background: var(--corn); color: var(--ink); box-shadow: 0 4px 0 var(--corn-deep); }
-.btn.corn:hover:not(:disabled) { background: var(--corn-hi); }
 .btn.ghost { background: #EAF6FF; color: var(--ink); box-shadow: 0 4px 0 #BFD9EA; }
-.btn.ghost:hover:not(:disabled) { background: #DDF0FF; }
 .btn.danger { background: #FDECEC; color: var(--bad); box-shadow: 0 4px 0 #F2C3C3; }
 .btn.sm { min-height: 36px; padding: 0 14px; font-size: 14px; }
 .btn.card-link, .card a.btn { color: inherit; }
@@ -205,12 +201,11 @@ button { font: inherit; }
 .stage.maxi { position: fixed; inset: 0; z-index: 60; width: 100vw; height: 100vh; height: 100dvh; aspect-ratio: auto; min-width: 0; }
 .stage-exit { position: absolute; top: max(10px, env(safe-area-inset-top)); right: 10px; z-index: 2; min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px;
   background: rgba(0,0,0,.6); color: #fff; font-weight: 900; font-size: 13px; cursor: pointer; opacity: .6; }
-.stage-exit:hover, .stage-exit:focus-visible { opacity: 1; }
+.stage-exit:focus-visible { opacity: 1; }
 .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 16px; background: var(--card); }
 .bar-title { display: flex; align-items: center; gap: 10px; min-width: 0; flex-wrap: wrap; }
 .bar-title h1 { font-size: 22px; font-weight: 900; line-height: 1.15; overflow-wrap: anywhere; }
 .chip { display: inline-flex; align-items: center; padding: 2px 12px; border-radius: 999px; background: var(--corn); color: var(--ink); font-size: 13px; font-weight: 900; text-decoration: none; white-space: nowrap; }
-.chip:hover { background: var(--corn-hi); }
 .bar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 @media (max-width: 899px) {
   .game-layout { flex-direction: column; align-items: stretch; }
@@ -246,7 +241,6 @@ button { font: inherit; }
 .search-body .mosaic { justify-content: start; }
 .cat-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .cat-list .chip { font-size: 14.5px; padding: 6px 14px; background: #fff; box-shadow: var(--shadow); }
-.cat-list .chip:hover { background: var(--corn); }
 
 /* ---------- Verwaltung ---------- */
 .admin { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 1180px; margin: 0 auto; }
@@ -289,8 +283,35 @@ button { font: inherit; }
 .foot h4 { margin: 0 0 10px; font-size: 13px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-hi); }
 .foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .foot a { color: #fff; text-decoration: none; font-weight: 700; overflow-wrap: anywhere; }
-.foot a:hover { color: var(--gold-hi); text-decoration: underline; }
 .foot-bottom { max-width: 1640px; margin: 0 auto; padding: 14px 16px 22px; border-top: 1px solid rgba(232,199,102,.3); font-size: 13px; color: #E5CDD0; display: flex; gap: 12px; justify-content: space-between; flex-wrap: wrap; }
+
+/* ---------- Eingabe: Maus, Tastatur, Touch ----------
+   Hover-Effekte nur bei echter Maus – sonst braucht iPhone/iPad zwei Tipper pro Klick.
+   „manipulation“ schaltet das Doppeltipp-Zoomen und die Klick-Verzögerung ab. */
+@media (hover: hover) and (pointer: fine) {
+  .round:hover { background: var(--corn); transform: translateY(-1px); }
+  .tile:hover { transform: scale(1.06) rotate(-1deg); box-shadow: var(--shadow-hi), 0 0 0 4px var(--corn); z-index: 2; outline: none; }
+  .tile:hover .tile-title { opacity: 1; transform: none; }
+  .cat-tile:hover { transform: scale(1.05); box-shadow: var(--shadow-hi), 0 0 0 4px var(--corn); outline: none; }
+  .btn:hover:not(:disabled) { background: var(--leaf-hi); }
+  .btn.corn:hover:not(:disabled) { background: var(--corn-hi); }
+  .btn.ghost:hover:not(:disabled) { background: #DDF0FF; }
+  .stage-exit:hover { opacity: 1; }
+  .chip:hover { background: var(--corn-hi); }
+  .cat-list .chip:hover { background: var(--corn); }
+  .foot a:hover { color: var(--gold-hi); text-decoration: underline; }
+}
+html { touch-action: manipulation; }
+a, button, select, label, summary, input, textarea { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.tile, .cat-tile, .btn, .round, .chip, .tab, .logo, .wortmarke { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.tile img { pointer-events: none; -webkit-user-drag: none; }
+input, textarea, select, .input, .textarea, .select { font-size: 16px; }   /* unter 16px zoomt iOS beim Antippen */
+.tile:active, .cat-tile:active { transform: scale(.95); transition-duration: .06s; }
+.round:active, .chip:active, .tab:active { background: var(--corn); }
+.btn.ghost:active:not(:disabled) { background: #DDF0FF; }
+.foot a { display: inline-block; padding: 3px 0; }
+.stage { touch-action: none; overscroll-behavior: contain; }
+body.no-scroll { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -303,6 +324,13 @@ button { font: inherit; }
 <noscript><p style="padding:24px;font-family:sans-serif">Maiskolbistan Spiele benötigt JavaScript.</p></noscript>
 <script>
 'use strict';
+(function noIosZoom() {
+  const ios = /iP(hone|ad|od)/.test(navigator.platform || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) || /iPhone|iPad|iPod/.test(navigator.userAgent);
+  if (!ios) return;
+  const vp = document.querySelector('meta[name=viewport]');
+  if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover');
+  ['gesturestart', 'gesturechange'].forEach((t) => document.addEventListener(t, (e) => e.preventDefault(), { passive: false }));
+})();
 /* =====================================================================
    MAISKOLBISTAN SPIELE
    Eine einzige Datei: öffentliches Spieleportal (ohne Anmeldung),
@@ -503,7 +531,7 @@ function Tile(g, opt) {
   const size = opt && opt.small ? 'normal' : g.groesse;
   const a = h('a', { class: 'tile s-' + size, href: '#/spiel/' + encodeURIComponent(g.id), 'aria-label': g.titel + ' spielen' });
   if (g.bild_url) {
-    const img = h('img', { src: g.bild_url, alt: '', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' });
+    const img = h('img', { src: g.bild_url, alt: '', draggable: 'false', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' });
     img.addEventListener('error', () => img.replaceWith(Fill(g)));
     a.append(img);
   } else a.append(Fill(g));
@@ -558,6 +586,7 @@ function openSearch() {
   update(); input.focus();
 }
 document.addEventListener('keydown', (e) => {
+  if (e.key === ' ' && e.target && e.target.matches && e.target.matches('a.tile, a.cat-tile, a.btn, a.round, a.chip')) { e.preventDefault(); e.target.click(); return; }
   const t = e.target; const typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable);
   if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) { e.preventDefault(); openSearch(); }
 });
@@ -621,19 +650,31 @@ function GamePage(g) {
   function frame() {
     const load = h('div', { class: 'stage-load', role: 'status' }, h('span', { class: 'spin', 'aria-hidden': 'true' }), g.titel + ' wird geladen …');
     const f = h('iframe', { title: g.titel, src: g.url, sandbox, allow: 'fullscreen; autoplay; gamepad; accelerometer; gyroscope; screen-wake-lock', allowfullscreen: true });
-    f.addEventListener('load', () => load.remove());
+    f.addEventListener('load', () => { load.remove(); const a = document.activeElement; if (!a || a === document.body || stage.contains(a)) f.focus({ preventScroll: true }); });
     stage.replaceChildren(load, f);
+    current = f;
   }
+  let current = null;
+  /* Pfeiltasten/Leertaste/WASD sollen das Spiel steuern und nicht die Seite scrollen */
+  const GAME_KEYS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D'];
+  function onKey(e) {
+    const a = document.activeElement;
+    if (!current || !GAME_KEYS.includes(e.key) || (a && a !== document.body && !stage.contains(a))) return;
+    e.preventDefault(); current.focus({ preventScroll: true });
+  }
+  document.addEventListener('keydown', onKey);
+  cleanup.push(() => document.removeEventListener('keydown', onKey));
+  stage.addEventListener('pointerdown', () => { if (current) current.focus({ preventScroll: true }); });
   function syncExit() { const big = !!document.fullscreenElement || maxi; if (big && !exitBtn.isConnected) stage.append(exitBtn); if (!big) exitBtn.remove(); }
   async function toggleFull() {
     if (document.fullscreenElement) { try { await document.exitFullscreen(); } catch (e) { /* egal */ } return; }
-    if (maxi) { maxi = false; stage.classList.remove('maxi'); syncExit(); return; }
+    if (maxi) { maxi = false; stage.classList.remove('maxi'); document.body.classList.remove('no-scroll'); syncExit(); return; }
     if (stage.requestFullscreen) { try { await stage.requestFullscreen(); syncExit(); return; } catch (e) { /* Ersatz */ } }
-    maxi = true; stage.classList.add('maxi'); syncExit();
+    maxi = true; stage.classList.add('maxi'); document.body.classList.add('no-scroll'); syncExit();
   }
   document.addEventListener('fullscreenchange', syncExit);
   stage.addEventListener('keydown', (e) => { if (e.key === 'Escape' && maxi) toggleFull(); });
-  cleanup.push(() => document.removeEventListener('fullscreenchange', syncExit));
+  cleanup.push(() => { document.removeEventListener('fullscreenchange', syncExit); document.body.classList.remove('no-scroll'); });
   frame();
 
   const player = h('div', { class: 'player' }, stage,
